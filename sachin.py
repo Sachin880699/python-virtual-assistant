@@ -11,9 +11,31 @@ def main():
         sleep(1)
 
     try:
-        data = r.recognize_google(audio)
-        print(data)
-        print('I add this line ')
+        data = r.recognize_google(audio,language = 'mr-IN')
+        with open('temp_command.txt','w') as file_save_data:
+            file_save_data.write(data)
+
+        with open('command.txt') as f:
+            command = [line.rstrip() for line in f]
+            print(command)
+            if data in command:
+                print('ok')
+
+                command = command.index(data)
+                with open('answer.txt') as f:
+                    lines = [line.rstrip() for line in f]
+                    print(command)
+                    print(lines[command])
+            else:
+                data =data
+                if data=="बारा आहे":
+                    print('okkkkkkkkkkkkkkkkkkk')
+
+
+
+
+
+
         
     except sr.UnknownValueError:
         print("Could not understand audio")
