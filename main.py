@@ -3,6 +3,10 @@ from time import sleep
 from selenium import webdriver
 from time import sleep
 from selenium.webdriver.support.select import Select
+import pandas as pd
+import random
+
+
 
 #---------------------text to speech site is open---------
 driver = webdriver.Chrome('/home/sachin/Desktop/chromedriver')
@@ -65,10 +69,33 @@ def main():
                 with open('temp_command.txt')as f:
                     data = f.read()
 
-                    if data=='कुठे आहे':
-                        print('ghari ahe')
-                    if data=='कधी':
-                        print("no at all")
+                    if data=='किती वाजलेत':
+                        hour = pd.datetime.now().hour
+                        minute = pd.datetime.now().minute
+
+                        username_box = driver.find_element_by_id('speech-msg')
+                        username_box.send_keys(hour,'वाजून',minute,'मिनिटे')
+                        print("Message is type")
+                        select_fr = Select(driver.find_element_by_id("voice"))
+                        select_fr.select_by_index(39)
+                        data = driver.find_element_by_id('btnSpeak').click()
+                        username_box = driver.find_element_by_id('speech-msg').clear()
+                        main()
+                    if data=='मराठी विनोद' or data=='मराठी जोके' or data=='जोके' or data=='विनोद':
+                        with open('joke.txt') as f:
+                            command = [line.rstrip() for line in f]
+                            joke = random.choice(command)
+
+
+                        username_box = driver.find_element_by_id('speech-msg')
+                        username_box.send_keys(joke)
+                        print("Message is type")
+                        select_fr = Select(driver.find_element_by_id("voice"))
+                        select_fr.select_by_index(39)
+                        data = driver.find_element_by_id('btnSpeak').click()
+                        username_box = driver.find_element_by_id('speech-msg').clear()
+                        sleep(5)
+                        main()
 
 
 
